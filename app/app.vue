@@ -77,17 +77,11 @@
 </template>
 
 <script setup>
-import { readItems } from '@directus/sdk'
-
-// Fetch patterns from Directus
-const { $directus } = useNuxtApp()
-
-// Try to fetch patterns - with better error handling
+// Simple direct API call since we know it works
 const { data: patterns, pending, error } = await useAsyncData(
   'patterns',
   async () => {
     try {
-      // Direct API call as backup if SDK fails
       const response = await $fetch('https://syndeo.directus.app/items/patterns', {
         params: {
           'filter[status][_eq]': 'validated',
@@ -95,39 +89,12 @@ const { data: patterns, pending, error } = await useAsyncData(
           sort: 'sort'
         }
       })
+      console.log('Fetched patterns from Directus:', response.data)
       return response.data
     } catch (e) {
       console.error('Error fetching patterns:', e)
-      // Return mock data if API fails
-      return [
-        {
-          id: 1,
-          pattern_number: 'P-001',
-          title: 'AI Pattern Recognition in Value Stream Mapping',
-          pattern_type: 'accelerator',
-          context: 'Maritime Operations',
-          effect: '75% reduction in analysis time',
-          description: 'Using AI to analyze workflow data and identify hidden inefficiencies.'
-        },
-        {
-          id: 2,
-          pattern_number: 'P-002',
-          title: 'Building Without User Pull',
-          pattern_type: 'blocker',
-          context: 'Service Platform',
-          effect: '0% adoption rate',
-          description: 'Perfect technical solutions fail when users aren\'t ready.'
-        },
-        {
-          id: 3,
-          pattern_number: 'P-003',
-          title: 'Weekly AI-Human Synthesis Sessions',
-          pattern_type: 'accelerator',
-          context: 'Software Development',
-          effect: '3x faster impediment resolution',
-          description: 'Structured sessions where AI finds patterns and humans make decisions.'
-        }
-      ]
+      // Return empty array if error
+      return []
     }
   }
 )
