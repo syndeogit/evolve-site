@@ -1,0 +1,11 @@
+/* Main CSS file for Syndeo */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+:root {
+  --color-primary: #1e40af;
+  --color-secondary: #64748b;
+  --color-accent: #ea580c;
+}
